@@ -4,26 +4,6 @@ Package west provides helpers for testing HTTP endpoints with the httptest packa
 
 ### How it works
 
-Write test code as normal:
-
-```
-func TestSomething(t *testing.T) {
-  // TODO: write test
-}
-```
-
-Use the `httptest` package to make a test server to test `YourHandler`:
-
-```
-func TestSomething(t *testing.T) {
-  s := httptest.NewServer(new(YourHandler))
-  defer s.Close()
-}
-```
-
-Use `west.R` to make requests easily, and call `Do` to make the request, and get
-the response.
-
 ```
 func TestSomething(t *testing.T) {
   is := is.New(t) // use whichever framework you like
