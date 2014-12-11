@@ -24,8 +24,8 @@ type R struct {
 }
 
 // Do makes the request against the specified httptest.Server and
-// returns a Res response, or an error.
-func (r R) Do(s *httptest.Server) (*Resp, error) {
+// returns a Response, or an error.
+func (r R) Do(s *httptest.Server) (*Response, error) {
 
 	// setup defaults
 	if r.Client == nil {
@@ -70,10 +70,10 @@ func (r R) Do(s *httptest.Server) (*Resp, error) {
 	}
 
 	// make request
-	response, err := r.Client.Do(req)
+	resp, err := r.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Resp{Response: response}, nil
+	return &Response{Response: resp}, nil
 }

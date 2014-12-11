@@ -12,7 +12,7 @@ import (
 
 func TestResponseBodyBytes(t *testing.T) {
 	is := is.New(t)
-	res := &west.Resp{Response: &http.Response{
+	res := &west.Response{Response: &http.Response{
 		Body: ioutil.NopCloser(strings.NewReader(`bytes`)),
 	}}
 	is.Equal([]byte(`bytes`), res.BodyBytes())
@@ -20,7 +20,7 @@ func TestResponseBodyBytes(t *testing.T) {
 
 func TestResponseBodyString(t *testing.T) {
 	is := is.New(t)
-	res := &west.Resp{Response: &http.Response{
+	res := &west.Response{Response: &http.Response{
 		Body: ioutil.NopCloser(strings.NewReader(`string`)),
 	}}
 	is.Equal(`string`, res.BodyString())
@@ -28,7 +28,7 @@ func TestResponseBodyString(t *testing.T) {
 
 func TestResponseBodyMap(t *testing.T) {
 	is := is.New(t)
-	res := &west.Resp{Response: &http.Response{
+	res := &west.Response{Response: &http.Response{
 		Body: ioutil.NopCloser(strings.NewReader(`{"name":"cheekybits"}`)),
 	}}
 	is.Equal(`cheekybits`, res.BodyMap()["name"])
@@ -36,7 +36,7 @@ func TestResponseBodyMap(t *testing.T) {
 
 func TestResponseBodyMapSlice(t *testing.T) {
 	is := is.New(t)
-	res := &west.Resp{Response: &http.Response{
+	res := &west.Response{Response: &http.Response{
 		Body: ioutil.NopCloser(strings.NewReader(`[{"name":"cheekybits"},{"name":"verycheekybits"}]`)),
 	}}
 	is.Equal(`cheekybits`, res.BodyMapSlice()[0]["name"])

@@ -5,15 +5,29 @@ import (
 	"net/http"
 )
 
-// Resp represents a response.
+type Test struct {
+	Req  R
+	Resp Resp
+}
+
 type Resp struct {
+	// B is the body.
+	B interface{}
+	// S is the status code.
+	S int
+	// H is the http.Header.
+	H http.Header
+}
+
+// Response represents a Responseonse.
+type Response struct {
 	*http.Response
 	parsedBody bool
 	body       []byte
 }
 
-// BodyBytes gets the bytes from the response body.
-func (r *Resp) BodyBytes() []byte {
+// BodyBytes gets the bytes from the Responseonse body.
+func (r *Response) BodyBytes() []byte {
 	if !r.parsedBody {
 		r.parsedBody = true
 		var err error
@@ -25,12 +39,12 @@ func (r *Resp) BodyBytes() []byte {
 }
 
 // BodyString gets the body as a string.
-func (r *Resp) BodyString() string {
+func (r *Response) BodyString() string {
 	return string(r.BodyBytes())
 }
 
 // BodyMap gets the body as a map[string]interface{}.
-func (r *Resp) BodyMap() map[string]interface{} {
+func (r *Response) BodyMap() map[string]interface{} {
 	var obj map[string]interface{}
 	if err := Unmarshal(r.BodyBytes(), &obj); err != nil {
 		panic("BodyMap failed: " + err.Error())
@@ -39,7 +53,7 @@ func (r *Resp) BodyMap() map[string]interface{} {
 }
 
 // BodyMapSlice gets the body as a []map[string]interface{}.
-func (r *Resp) BodyMapSlice() []map[string]interface{} {
+func (r *Response) BodyMapSlice() []map[string]interface{} {
 	var objs []map[string]interface{}
 	if err := Unmarshal(r.BodyBytes(), &objs); err != nil {
 		panic("BodyMapSlice failed: " + err.Error())
