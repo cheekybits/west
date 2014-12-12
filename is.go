@@ -33,11 +33,9 @@ func (a A) Is(r *Response) error {
 
 		switch body := a.B.(type) {
 		case string: // literal
-
 			if body != r.BodyString() {
 				return fmt.Errorf("body string \"%s\" != \"%s\"", r.BodyString(), body)
 			}
-
 		case []byte:
 			if string(body) != string(r.BodyBytes()) {
 				return fmt.Errorf("body bytes \"%s\" != \"%s\"", string(r.BodyString()), string(body))

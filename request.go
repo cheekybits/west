@@ -50,9 +50,9 @@ func (r R) Do(s *httptest.Server) (*Response, error) {
 
 	// make request
 	var req *http.Request
+	var bodyReader io.Reader
 
 	if r.B != nil {
-		var bodyReader io.Reader
 		switch body := r.B.(type) {
 		case string:
 			bodyReader = strings.NewReader(body)
@@ -67,16 +67,11 @@ func (r R) Do(s *httptest.Server) (*Response, error) {
 			}
 			bodyReader = bytes.NewReader(b)
 		}
-		req, err = http.NewRequest(r.M, u.String(), bodyReader)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		// no body
-		req, err = http.NewRequest(r.M, u.String(), nil)
-		if err != nil {
-			return nil, err
-		}
+	}
+
+	req, err = http.NewRequest(r.M, u.String(), bodyReader)
+	if err != nil {
+		return nil, err
 	}
 
 	// make request

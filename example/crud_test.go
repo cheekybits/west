@@ -30,8 +30,9 @@ func (t *EchoServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(status)
 	b, _ := ioutil.ReadAll(r.Body)
 	data := map[string]interface{}{
-		"path": r.URL.Path,
-		"body": string(b),
+		"path":   r.URL.Path,
+		"body":   string(b),
+		"method": r.Method,
 	}
 	json.NewEncoder(w).Encode(data)
 }
@@ -46,16 +47,17 @@ func TestCRUD(t *testing.T) {
 	is.NoErr(west.R{
 		P: "/something",
 	}.MustDo(s).Is(west.A{
-		S: 200,
-		B: map[string]interface{}{"body": "", "path": "/something"},
+		S: http.StatusOK,
+		B: map[string]interface{}{"body": "", "method": "GET", "path": "/something"},
 	}))
 
 	is.NoErr(west.R{
+		M: "PATCH",
 		P: "/something",
 		B: `literal body`,
 	}.MustDo(s).Is(west.A{
-		S: 200,
-		B: map[string]interface{}{"body": "literal body", "path": "/something"},
+		S: http.StatusOK,
+		B: map[string]interface{}{"body": "literal body", "method": "PATCH", "path": "/something"},
 	}))
 
 }

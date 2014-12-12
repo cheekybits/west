@@ -15,6 +15,7 @@ type Response struct {
 // BodyBytes gets the bytes from the Responseonse body.
 func (r *Response) BodyBytes() []byte {
 	if !r.parsedBody {
+		defer r.Body.Close()
 		r.parsedBody = true
 		var err error
 		if r.body, err = ioutil.ReadAll(r.Body); err != nil {
