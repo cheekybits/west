@@ -5,20 +5,6 @@ import (
 	"net/http"
 )
 
-type Test struct {
-	Req  R
-	Resp Resp
-}
-
-type Resp struct {
-	// B is the body.
-	B interface{}
-	// S is the status code.
-	S int
-	// H is the http.Header.
-	H http.Header
-}
-
 // Response represents a Responseonse.
 type Response struct {
 	*http.Response
