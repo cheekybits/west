@@ -19,6 +19,7 @@ func TestResponseIs(t *testing.T) {
 	}}
 	is.NoErr(west.A{S: 200, B: "string"}.Is(res))
 	is.Equal("status code 200 != 201", west.A{S: 201}.Is(res).Error())
-	is.Equal("body \"string\" != \"strings\"", west.A{B: "strings"}.Is(res).Error())
+	is.Equal("body string \"string\" != \"strings\"", west.A{B: "strings"}.Is(res).Error())
+	is.Equal("body bytes \"string\" != \"strings\"", west.A{B: []byte("strings")}.Is(res).Error())
 
 }

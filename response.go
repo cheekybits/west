@@ -29,6 +29,15 @@ func (r *Response) BodyString() string {
 	return string(r.BodyBytes())
 }
 
+// BodyObj gets the body as an interface{}.
+func (r *Response) BodyObj() interface{} {
+	var obj interface{}
+	if err := Unmarshal(r.BodyBytes(), &obj); err != nil {
+		panic("BodyObj failed: " + err.Error())
+	}
+	return obj
+}
+
 // BodyMap gets the body as a map[string]interface{}.
 func (r *Response) BodyMap() map[string]interface{} {
 	var obj map[string]interface{}

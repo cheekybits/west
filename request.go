@@ -23,6 +23,16 @@ type R struct {
 	Client *http.Client
 }
 
+// MustDo makes the request against the specified httptest.Server and
+// returns a Response, or panics if an error occurs.
+func (r R) MustDo(s *httptest.Server) *Response {
+	res, err := r.Do(s)
+	if err != nil {
+		panic("MustDo failed: " + err.Error())
+	}
+	return res
+}
+
 // Do makes the request against the specified httptest.Server and
 // returns a Response, or an error.
 func (r R) Do(s *httptest.Server) (*Response, error) {
