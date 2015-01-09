@@ -18,6 +18,9 @@ type R struct {
 	// B is the body. Can be string, []byte, io.Reader.
 	// Anything else will be marshalled.
 	B interface{}
+	// H represents the request headers to be sent to the
+	// server.
+	H map[string]string
 	// Client is the http.Client to use when making
 	// requests.
 	Client *http.Client
@@ -72,6 +75,13 @@ func (r R) Do(s *httptest.Server) (*Response, error) {
 	req, err = http.NewRequest(r.M, u.String(), bodyReader)
 	if err != nil {
 		return nil, err
+	}
+
+	// set headers
+	if r.H != nil {
+		for k, v := range r.H {
+			req.Header.Set(k, v)
+		}
 	}
 
 	// make request
