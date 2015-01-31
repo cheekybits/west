@@ -34,6 +34,18 @@ func TestResponseBodyMap(t *testing.T) {
 	is.Equal(`cheekybits`, res.BodyMap()["name"])
 }
 
+func TestResponseBodyUnmarshal(t *testing.T) {
+	is := is.New(t)
+	res := &west.Response{Response: &http.Response{
+		Body: ioutil.NopCloser(strings.NewReader(`{"name":"cheekybits"}`)),
+	}}
+	o := struct {
+		Name string
+	}{}
+	res.UnmarshalBody(&o)
+	is.Equal(`cheekybits`, o.Name)
+}
+
 func TestResponseBodyMapSlice(t *testing.T) {
 	is := is.New(t)
 	res := &west.Response{Response: &http.Response{

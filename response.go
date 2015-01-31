@@ -48,6 +48,13 @@ func (r *Response) BodyMap() map[string]interface{} {
 	return obj
 }
 
+// UnmarshalBody unmarshals the body into the given object.
+func (r *Response) UnmarshalBody(obj interface{}) {
+	if err := Unmarshal(r.BodyBytes(), &obj); err != nil {
+		panic("UnmarshalBody failed: " + err.Error())
+	}
+}
+
 // BodyMapSlice gets the body as a []map[string]interface{}.
 func (r *Response) BodyMapSlice() []map[string]interface{} {
 	var objs []map[string]interface{}
