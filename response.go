@@ -63,3 +63,21 @@ func (r *Response) BodyMapSlice() []map[string]interface{} {
 	}
 	return objs
 }
+
+// IsBodyMap gets whether the body is a map[string]interface{}.
+func (r *Response) IsBodyMap() bool {
+	var obj map[string]interface{}
+	if err := Unmarshal(r.BodyBytes(), &obj); err != nil {
+		return false
+	}
+	return true
+}
+
+// IsBodyMapSlice gets the body is a []map[string]interface{}.
+func (r *Response) IsBodyMapSlice() bool {
+	var objs []map[string]interface{}
+	if err := Unmarshal(r.BodyBytes(), &objs); err != nil {
+		return false
+	}
+	return true
+}
