@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+// Query represents url.Values that will be added to all requests.
+var Query = make(url.Values)
+
 // R is a request.
 type R struct {
 	// M is the HTTP method.
@@ -50,6 +53,15 @@ func (r R) Do(s *httptest.Server) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// add common query elements
+	q := u.Query()
+	for k, vs := range Query {
+		for _, v := range vs {
+			q.Add(k, v)
+		}
+	}
+	u.RawQuery = q.Encode()
 
 	// make request
 	var req *http.Request

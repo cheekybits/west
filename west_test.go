@@ -50,3 +50,20 @@ func TestWest(t *testing.T) {
 	is.Equal(res.BodyString(), `{"body":"Hello world","path":"/something","query":{"name":["cheekybits"]}}`+"\n")
 	is.Equal(res.Header.Get("Content-Type"), "application/json")
 }
+
+func TestQuery(t *testing.T) {
+
+	is := is.New(t)
+	s := httptest.NewServer(new(EchoServer))
+	defer s.Close()
+	west.Query.Set("key", "value")
+	res, err := west.R{
+		P: "something",
+		B: "Hello world",
+	}.Do(s)
+	is.NoErr(err)
+	is.Equal(res.StatusCode, http.StatusOK)
+	is.Equal(res.BodyString(), `{"body":"Hello world","path":"/something","query":{"key":["value"]}}`+"\n")
+	is.Equal(res.Header.Get("Content-Type"), "application/json")
+
+}
