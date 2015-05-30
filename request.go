@@ -70,6 +70,9 @@ func (r R) Do(s *httptest.Server) (*Response, error) {
 
 	if r.B != nil {
 		switch body := r.B.(type) {
+		case url.Values:
+			contentType = "application/x-www-form-urlencoded"
+			bodyReader = strings.NewReader(body.Encode())
 		case string:
 			bodyReader = strings.NewReader(body)
 		case []byte:
