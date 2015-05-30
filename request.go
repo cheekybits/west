@@ -66,6 +66,7 @@ func (r R) Do(s *httptest.Server) (*Response, error) {
 	// make request
 	var req *http.Request
 	var bodyReader io.Reader
+	var contentType = "text/plain"
 
 	if r.B != nil {
 		switch body := r.B.(type) {
@@ -76,10 +77,11 @@ func (r R) Do(s *httptest.Server) (*Response, error) {
 		case io.Reader:
 			bodyReader = body
 		default:
-			b, err := Marshal(body)
+			b, ct, err := Marshal(body)
 			if err != nil {
 				return nil, err
 			}
+			contentType = ct
 			bodyReader = bytes.NewReader(b)
 		}
 	}
@@ -88,6 +90,8 @@ func (r R) Do(s *httptest.Server) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Set("Content-Type", contentType)
 
 	// set headers
 	if r.H != nil {

@@ -62,11 +62,11 @@ func (a A) Is(r *Response) error {
 				return fmt.Errorf("body %v != %v", body, r.BodyMap())
 			}
 		default:
-			expBytes, err := Marshal(body)
+			expBytes, _, err := Marshal(body)
 			if err != nil {
 				return err
 			}
-			actBytes, err := Marshal(r.BodyObj())
+			actBytes, _, err := Marshal(r.BodyObj())
 			if err != nil {
 				return err
 			}
